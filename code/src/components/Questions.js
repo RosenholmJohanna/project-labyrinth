@@ -1,43 +1,74 @@
-/* eslint-disable  linebreak-style */
-/* eslint-disable  indent */
+/* eslint-disable linebreak-style */
+/* eslint-disable indent */
+/* eslint-disable comma-spacing */
+/* eslint-disable spaced-comment */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable no-multi-spaces */
+/* eslint-disable max-len */
+/* eslint-disable space-infix-ops */
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable block-spacing */
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { nextQuestion } from 'reducers/questions';
-//import  StartScreen  from './StartScreen';
 import styled from 'styled-components'
 
+
 const UserNameText=styled.p`
-color: white;
+//color: white;
 `
 
-const Wrapper =styled.section`
-color: white;
+const FirstDescription=styled.p`
+//color: white;
+`
+
+const Wrapper =styled.div`
+//color: white;
+`
+const Button =styled.button`
+//color: white;
 `
 
 
 const Questions = () => { 
-  const dispatch = useDispatch();
+  
   const userName = useSelector((store) => store.questions.username);
-  const description = useSelector((store) => store.questions.description)
-  //const firstQuestion = useSelector((store) => store.questions.description) // map through actions [] to get histort of previous moves;
+  //const { description } = useSelector((store) => store.questions.description)
  //const question = useSelector((store)=> store.questions.question); 
-  //const question = question.question
+  const description = useSelector((store) => store.questions.description )
+  const dispatch = useDispatch(); 
   
 
-  const onButtonClick = (direction) => {
-   dispatch(nextQuestion(direction));
+  const onButtonClick = (action) => {
+   dispatch(nextQuestion(action));
   }
+  const currentStage = useSelector((store) => {
+    return store.question.currentStage;
+  })
+
+
   return (
+    
   <Wrapper>
     <UserNameText>
       Okay,{userName}, find the right path. Good Luck!
     </UserNameText>
-        <button
-          type="button"
-          onClick={() => onButtonClick(userName)}> //with this the fetch console log same as in fetch 1
-        </button>
+    <FirstDescription 
+      title={currentStage.description}>
+        {currentStage.actions.map((action) => (
+          <div key ={action.description}> 
+          <p>{action.description}</p>
+          <Button> onClick={() => onButtonClick(action)}
+          {action.direction()}
+          </Button>
+          </div>
+        ))}
+    </FirstDescription>
   </Wrapper>
-)}
+  )
+
+}
  
 
 export default Questions;
@@ -46,6 +77,12 @@ export default Questions;
 
 { /*
 
+ <button
+          type="button"
+          onClick={() => onButtonClick(userName)}> button
+        </button>
+
+//with this the fetch console log same as in fetch 1  //on sumbit we do fetch request buttonclick username
  <UserNameText>
     Okay <strong>{userName}</strong> Good Luck!
     </UserNameText>
